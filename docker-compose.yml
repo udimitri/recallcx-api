@@ -1,0 +1,35 @@
+version: '3'
+services:
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+    image: rcx-php-fpm
+    container_name: rcx-php-fpm
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+
+  webserver:
+    image: nginx:alpine
+    container_name: rcx-nginx
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d/
+    ports:
+      - 8081:80
+
+  postgres:
+    image: postgres:16.3-alpine
+    container_name: rcx-postgres
+    volumes:
+      - recallcxdb:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    ports:
+      - 5888:5432
+
+volumes:
+  recallcxdb:

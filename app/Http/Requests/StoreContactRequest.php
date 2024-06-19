@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Domain\Twilio\LookupClient;
-use App\Models\ContactType;
+use App\Models\Enums\ContactType;
 use App\Rules\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -48,11 +48,4 @@ class StoreContactRequest extends FormRequest
         };
     }
 
-    public function value(): string
-    {
-        return match (true) {
-            $this->has('email_address') => $this->input('email_address'),
-            $this->has('phone_number') => $this->input('phone_number'),
-        };
-    }
 }

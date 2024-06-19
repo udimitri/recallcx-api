@@ -26,13 +26,26 @@ class Business extends Model
         return $this->hasMany(Contact::class);
     }
 
+    public function unsubscribe_logs(): HasMany
+    {
+        return $this->hasMany(UnsubscribeLog::class);
+    }
+
+    public static function findByTwilioId(string $account_id): ?self
+    {
+        return self::query()
+            ->where('twilio_account_id', $account_id)
+            ->first();
+    }
+
     public static function build(
         string $slug,
-        string $name
+        string $name,
+        array $params = []
     ): self {
-        return self::query()->create([
+        return self::query()->create(array_merge($params, [
             'slug' => $slug,
             'name' => $name
-        ]);
+        ]));
     }
 }

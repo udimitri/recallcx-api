@@ -14,4 +14,12 @@ class BusinessOwner extends Model
     {
         return $this->belongsTo(Business::class);
     }
+
+    public static function build(Business $business, string $first_name)
+    {
+        return self::query()->create([
+            'business_id' => $business->id,
+            'first_name' => $first_name,
+        ]);
+    }
 }

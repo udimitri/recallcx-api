@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use App\Domain\Transports\EmailTransport;
+use App\Domain\Transports\SmsTransport;
+use App\Domain\Transports\Transport;
 use App\Exceptions\ContactAlreadyExistsException;
+use App\Models\Enums\ContactType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Twilio\Rest\Client as TwilioClient;
 
 class Contact extends Model
 {
@@ -38,5 +43,22 @@ class Contact extends Model
         }
 
         return $business->contacts()->create($payload);
+    }
+
+    public function unsubscribe(): void
+    {
+        UnsubscribeLog::fromContact($this);
+
+        $this->delete();
+    }
+
+    public function transport(): Transport
+    {
+        $twilio_client = resolve(TwilioClient::class);
+
+        return match($this->channel) {
+            ContactType::Phone => new SmsTransport($twilio_client, $this),
+            ContactType::Email => new EmailTransport($this)
+        };
     }
 }

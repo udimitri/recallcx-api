@@ -36,8 +36,8 @@ return [
     ],
 
     'twilio' => [
-        'key' => env('TWILIO_API_KEY'),
-        'secret' => env('TWILIO_API_SECRET'),
+        'primary_sid' => env('TWILIO_PRIMARY_SID'),
+        'auth_token' => env('TWILIO_AUTH_TOKEN'),
     ]
 
 ];

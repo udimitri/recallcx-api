@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class UnsubscribeHistory extends Model
+class UnsubscribeLog extends Model
 {
 
     protected $guarded = [];
@@ -14,5 +14,13 @@ class UnsubscribeHistory extends Model
     public function business(): BelongsTo
     {
         return $this->belongsTo(Business::class);
+    }
+
+    public static function fromContact(Contact $contact): self
+    {
+        return $contact->business->unsubscribe_logs()->create([
+            'channel' => $contact->channel,
+            'value' => $contact->value,
+        ]);
     }
 }

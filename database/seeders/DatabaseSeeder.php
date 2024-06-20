@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Business;
+use App\Models\BusinessIncentive;
+use App\Models\BusinessOwner;
+use App\Models\Enums\IncentiveType;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +15,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $business = Business::create([
+            'slug' => 'circularchic',
+            'name' => 'CHIC Circular Fashion',
+            'google_review_url' => 'https://g.page/r/CRMi-N-HNuIEEBM/review',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        BusinessOwner::create([
+            'business_id' => $business->id,
+            'first_name' => 'Mel',
+            'phone_number' => '+17804511562'
+        ]);
+
+        BusinessIncentive::create([
+            'business_id' => $business->id,
+            'type' => IncentiveType::Amount,
+            'value' => '5',
         ]);
     }
 }

@@ -29,7 +29,7 @@ class SendReviewRequests extends Command
             $target->review_request_sent_at = Carbon::now();
             $target->save();
 
-            $this->info("Sent review request for contact #{$target->id} on {$target->channel}.");
+            $this->info("Sent review request for contact #{$target->id} on {$target->channel->value}.");
         }
 
         $this->info("Completed send review request!");

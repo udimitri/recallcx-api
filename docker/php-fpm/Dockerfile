@@ -31,6 +31,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install zip gd pdo_pgsql bcmath
 RUN pecl install redis && docker-php-ext-enable redis
 RUN pecl install xdebug && docker-php-ext-enable xdebug
+RUN pecl install excimer && docker-php-ext-enable excimer
 
 # Uncomment for opcache (warning, you cannot make code changes after enabling opcache)
 # You MUST rebuild docker (or restart FPM) for changes to work

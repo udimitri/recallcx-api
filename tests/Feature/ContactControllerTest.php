@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\Twilio\SmsClient;
 use App\Mail\EmailConfirmation;
 use App\Models\Business;
 use App\Models\Contact;
@@ -35,11 +36,12 @@ describe('it can store contacts', function () {
     })->with('business');
 
     it('can store a phone contact and send confirmation text', function (Business $business) {
-        $this->mock(Client::class, function (MockInterface $mock) {
-            $mock->messages = Mockery::mock(MessageList::class, function (MockInterface $mock) {
-                $mock->shouldReceive('create')
-                    ->once();
-            });
+        $this->mock(SmsClient::class, function (MockInterface $mock) {
+            $mock->shouldReceive('send')
+                ->with(
+                    Mockery::on(fn (Contact $contact) => $contact->value === '+17809103702'),
+                    'Business A: Thanks for sharing your phone number. Show this to our team member to receive $5 off your purchase! Reply STOP to opt out.'
+                );
         });
 
         StubLookupClient::registerFormatted("780 910-3702", "+17809103702");
@@ -73,11 +75,8 @@ describe('it can store contacts', function () {
     })->with('business');
 
     it('cannot store a phone contact twice', function (Business $business) {
-        $this->mock(Client::class, function (MockInterface $mock) {
-            $mock->messages = Mockery::mock(MessageList::class, function (MockInterface $mock) {
-                $mock->shouldReceive('create')
-                    ->never();
-            });
+        $this->mock(SmsClient::class, function (MockInterface $mock) {
+            $mock->shouldReceive('send')->never();
         });
 
         Contact::build($business, ContactType::Phone, "+17809103702");

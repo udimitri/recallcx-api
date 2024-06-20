@@ -9,10 +9,14 @@ use Twilio\Rest\Lookups\V2\PhoneNumberInstance;
 class TwilioLookupClient implements LookupClient
 {
     private Collection $cache;
+    private TwilioClient $client;
 
-    public function __construct(private TwilioClient $client)
-    {
+    public function __construct(
+        string $accountId,
+        string $authToken
+    ) {
         $this->cache = new Collection();
+        $this->client = new TwilioClient($accountId, $authToken);
     }
 
     private function get(string $query): PhoneNumberInstance

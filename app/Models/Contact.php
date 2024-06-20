@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Domain\Transports\EmailTransport;
 use App\Domain\Transports\SmsTransport;
 use App\Domain\Transports\Transport;
+use App\Domain\Twilio\SmsClient;
+use App\Domain\Twilio\TwilioSmsClient;
 use App\Exceptions\ContactAlreadyExistsException;
 use App\Models\Enums\ContactType;
 use Illuminate\Database\Eloquent\Model;
@@ -54,10 +56,8 @@ class Contact extends Model
 
     public function transport(): Transport
     {
-        $twilio_client = resolve(TwilioClient::class);
-
-        return match($this->channel) {
-            ContactType::Phone => new SmsTransport($twilio_client, $this),
+        return match ($this->channel) {
+            ContactType::Phone => new SmsTransport(resolve(SmsClient::class), $this),
             ContactType::Email => new EmailTransport($this)
         };
     }

@@ -2,15 +2,15 @@
 
 namespace App\Domain\Transports;
 
+use App\Domain\Twilio\SmsClient;
 use App\Exceptions\BusinessNotConfiguredForSms;
 use App\Exceptions\ContactMustBeSms;
 use App\Models\Contact;
 use App\Models\Enums\ContactType;
-use Twilio\Rest\Client as TwilioClient;
 
 class SmsTransport implements Transport
 {
-    public function __construct(private TwilioClient $twilioClient, private Contact $contact)
+    public function __construct(private SmsClient $client, private Contact $contact)
     {
         if ($this->contact->channel !== ContactType::Phone) {
             throw new ContactMustBeSms();
@@ -41,11 +41,8 @@ class SmsTransport implements Transport
         $this->sendSms($message);
     }
 
-    private function sendSms(string $message)
+    private function sendSms(string $message): void
     {
-        $this->twilioClient->messages->create($this->contact->value, [
-            "messagingServiceSid" => $this->contact->business->twilio_messaging_service_id,
-            "body" => $message
-        ]);
+        $this->client->send($this->contact, $message);
     }
 }

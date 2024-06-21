@@ -11,6 +11,11 @@ class Business extends Model
 
     protected $guarded = [];
 
+    protected $hidden = [
+        'twilio_account_id',
+        'twilio_messaging_service_id'
+    ];
+
     public function business_owner(): HasOne
     {
         return $this->hasOne(BusinessOwner::class);

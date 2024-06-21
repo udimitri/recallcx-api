@@ -17,14 +17,16 @@ describe('it can act on businesses', function () {
 
         $this->getJson("/api/businesses/{$business->slug}")
             ->assertOk()
-        ->assertJson([
-            'business' => [
-                'id' => $business->id,
-                'slug' => 'biz-a',
-                'name' => 'Business A',
-                'google_review_url' => 'https://google.com/test',
-            ]
-        ]);
+            ->assertJson([
+                'business' => [
+                    'id' => $business->id,
+                    'slug' => 'biz-a',
+                    'name' => 'Business A',
+                    'google_review_url' => 'https://google.com/test',
+                ]
+            ])
+            ->assertJsonMissingPath('business.twilio_account_id')
+            ->assertJsonMissingPath('business.twilio_messaging_service_id');
 
     })->with('business');
 

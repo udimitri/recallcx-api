@@ -9,15 +9,13 @@ use App\Models\UnsubscribeLog;
 use Illuminate\Support\Facades\Mail;
 use Mockery\MockInterface;
 use Tests\Stubs\StubLookupClient;
-use Twilio\Rest\Api\V2010\Account\MessageList;
-use Twilio\Rest\Client;
 
 describe('it can store contacts', function () {
 
     it('can store an email contact and send confirmation email', function (Business $business) {
         Mail::fake();
 
-        $this->postJson("/api/businesses/{$business->id}/contacts", [
+        $this->postJson("/api/businesses/{$business->slug}/contacts", [
             "email_address" => "dimitri@recallcx.com"
         ])->assertNoContent();
 
@@ -47,7 +45,7 @@ describe('it can store contacts', function () {
         StubLookupClient::registerFormatted("780 910-3702", "+17809103702");
         StubLookupClient::registerValid("780 910-3702", true);
 
-        $this->postJson("/api/businesses/{$business->id}/contacts", [
+        $this->postJson("/api/businesses/{$business->slug}/contacts", [
             "phone_number" => "780 910-3702"
         ])->assertNoContent();
 
@@ -67,7 +65,7 @@ describe('it can store contacts', function () {
 
         Contact::build($business, ContactType::Email, "dimitri@recallcx.com");
 
-        $this->postJson("/api/businesses/{$business->id}/contacts", [
+        $this->postJson("/api/businesses/{$business->slug}/contacts", [
             "email_address" => "dimitri@recallcx.com"
         ])->assertConflict();
 
@@ -84,7 +82,7 @@ describe('it can store contacts', function () {
         StubLookupClient::registerFormatted("7809103702", "+17809103702");
         StubLookupClient::registerValid("7809103702", true);
 
-        $this->postJson("/api/businesses/{$business->id}/contacts", [
+        $this->postJson("/api/businesses/{$business->slug}/contacts", [
             "phone_number" => "7809103702"
         ])->assertConflict();
     })->with('business');
@@ -94,7 +92,7 @@ describe('it can store contacts', function () {
 
         Contact::build($business, ContactType::Email, "dimitri@recallcx.com");
 
-        $this->postJson("/api/businesses/{$business->id}/contacts/unsubscribe", [
+        $this->postJson("/api/businesses/{$business->slug}/contacts/unsubscribe", [
             "encoded_email" => "ZGltaXRyaUByZWNhbGxjeC5jb20"
         ])->assertNoContent();
 

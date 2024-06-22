@@ -39,9 +39,11 @@ class ContactController
         $contact = $business->contacts()
             ->where('channel', ContactType::Email)
             ->where('value', $decoded_email)
-            ->firstOrFail();
+            ->first();
 
-        $contact->unsubscribe();
+        // if the contact doesn't exist, that's ok
+        // they're not going to get emails
+        $contact?->unsubscribe();
 
         return response()->noContent();
     }

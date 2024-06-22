@@ -31,7 +31,6 @@ class DashboardController
     {
         $query = function (Carbon $date) use ($business) {
             return $business->contacts()
-                ->where('created_at', '>=', $date->copy()->startOfDay()->utc()->toDateTimeString())
                 ->where('created_at', '<=', $date->copy()->endOfDay()->utc()->toDateTimeString())
                 ->count();
         };

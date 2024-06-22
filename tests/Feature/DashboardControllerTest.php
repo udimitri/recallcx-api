@@ -28,17 +28,17 @@ describe('it can generate dashboard stats', function () {
         // so we should report on May 31 - Jun 6
         Carbon::setTestNow("2024-06-07 00:00 UTC");
 
-        $this->getJson("/api/businesses/{$business->slug}/dashboard/chart")
+        $this->getJson("/api/dashboard/businesses/{$business->slug}/chart")
             ->assertOk()
             ->assertJson([
                 "data" => [
                     [ "day" => "May 31", "count" => 0 ],
                     [ "day" => "Jun 1", "count" => 2 ],
-                    [ "day" => "Jun 2", "count" => 0 ],
-                    [ "day" => "Jun 3", "count" => 3 ],
-                    [ "day" => "Jun 4", "count" => 0 ],
-                    [ "day" => "Jun 5", "count" => 1 ],
-                    [ "day" => "Jun 6", "count" => 0 ],
+                    [ "day" => "Jun 2", "count" => 2 ],
+                    [ "day" => "Jun 3", "count" => 5 ],
+                    [ "day" => "Jun 4", "count" => 5 ],
+                    [ "day" => "Jun 5", "count" => 6 ],
+                    [ "day" => "Jun 6", "count" => 6 ],
                 ]
             ]);
     })->with('business');

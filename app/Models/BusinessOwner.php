@@ -15,11 +15,11 @@ class BusinessOwner extends Model
         return $this->belongsTo(Business::class);
     }
 
-    public static function build(Business $business, string $first_name)
+    public static function build(Business $business, string $first_name, array $attributes = [])
     {
-        return self::query()->create([
+        return self::query()->create(array_merge([
             'business_id' => $business->id,
             'first_name' => $first_name,
-        ]);
+        ], $attributes));
     }
 }

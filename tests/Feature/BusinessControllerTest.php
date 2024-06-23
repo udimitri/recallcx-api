@@ -15,7 +15,7 @@ describe('it can act on businesses', function () {
     it('can load a business', function (Business $business) {
         Mail::fake();
 
-        $this->getJson("/api/businesses/{$business->slug}")
+        $this->getJson("/api/kiosk/businesses/{$business->slug}")
             ->assertOk()
             ->assertJson([
                 'business' => [
@@ -23,6 +23,10 @@ describe('it can act on businesses', function () {
                     'slug' => 'biz-a',
                     'name' => 'Business A',
                     'google_review_url' => 'https://google.com/test',
+                    'owner' => [
+                        'first_name' => 'Ted',
+                        'phone_number' => '+17809103702'
+                    ]
                 ]
             ])
             ->assertJsonMissingPath('business.twilio_account_id')
@@ -33,7 +37,7 @@ describe('it can act on businesses', function () {
     it('404s on unknown business', function (Business $business) {
         Mail::fake();
 
-        $this->getJson("/api/businesses/test")
+        $this->getJson("/api/kiosk/businesses/test")
             ->assertNotFound();
 
     })->with('business');

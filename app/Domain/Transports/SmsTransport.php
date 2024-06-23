@@ -5,6 +5,7 @@ namespace App\Domain\Transports;
 use App\Domain\Twilio\SmsClient;
 use App\Exceptions\BusinessNotConfiguredForSms;
 use App\Exceptions\ContactMustBeSms;
+use App\Models\Broadcast;
 use App\Models\Contact;
 use App\Models\Enums\ContactType;
 
@@ -37,6 +38,15 @@ class SmsTransport implements Transport
         $incentive = $business->business_incentive;
 
         $message = "{$business->name}: Thanks for sharing your phone number. Show this to our team member to receive {$incentive->formatted()} your purchase! Reply STOP to opt out.";
+
+        $this->sendSms($message);
+    }
+
+    public function sendBroadcast(Broadcast $broadcast): void
+    {
+        $business = $this->contact->business;
+
+        $message = "{$business->name}: {$broadcast->message}";
 
         $this->sendSms($message);
     }

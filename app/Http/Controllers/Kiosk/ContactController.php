@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Kiosk;
 
 use App\Domain\Base64URL;
 use App\Domain\Twilio\LookupClient;
-use App\Http\Requests\StoreContactRequest;
+use App\Http\Requests\CreateContactRequest;
 use App\Models\Business;
 use App\Models\Contact;
 use App\Models\Enums\ContactType;
@@ -18,7 +18,7 @@ class ContactController
     ) {
     }
 
-    public function store(Business $business, StoreContactRequest $request): Response
+    public function store(Business $business, CreateContactRequest $request): Response
     {
         $value = match ($request->type()) {
             ContactType::Email => $request->input('email_address'),

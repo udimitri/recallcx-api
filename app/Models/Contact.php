@@ -6,12 +6,10 @@ use App\Domain\Transports\EmailTransport;
 use App\Domain\Transports\SmsTransport;
 use App\Domain\Transports\Transport;
 use App\Domain\Twilio\SmsClient;
-use App\Domain\Twilio\TwilioSmsClient;
 use App\Exceptions\ContactAlreadyExistsException;
 use App\Models\Enums\ContactType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Twilio\Rest\Client as TwilioClient;
 
 class Contact extends Model
 {

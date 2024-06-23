@@ -36,6 +36,16 @@ class Business extends Model
         return $this->hasMany(UnsubscribeLog::class);
     }
 
+    public function review_recoveries(): HasMany
+    {
+        return $this->hasMany(ReviewRecovery::class);
+    }
+
+    public function broadcasts(): HasMany
+    {
+        return $this->hasMany(Broadcast::class);
+    }
+
     public static function findByTwilioId(string $account_id): ?self
     {
         return self::query()

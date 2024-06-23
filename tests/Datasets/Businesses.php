@@ -13,7 +13,10 @@ dataset('business', [
             'google_review_url' => 'https://google.com/test'
         ]);
 
-        BusinessOwner::build($business, 'Ted');
+        BusinessOwner::build($business, 'Ted', [
+            'phone_number' => '+17809103702'
+        ]);
+
         BusinessIncentive::build($business, IncentiveType::Amount, '5');
 
         return $business;

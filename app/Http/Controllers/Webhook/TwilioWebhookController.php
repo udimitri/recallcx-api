@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Webhook;
 
 use App\Domain\Twilio\Twilio;
 use App\Models\Business;

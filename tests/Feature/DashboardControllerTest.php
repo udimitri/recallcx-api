@@ -28,7 +28,7 @@ describe('it can generate dashboard stats', function () {
         // so we should report on May 31 - Jun 6
         Carbon::setTestNow("2024-06-07 00:00 UTC");
 
-        $this->getJson("/api/dashboard/businesses/{$business->slug}/chart")
+        $this->getJson("/api/app/businesses/{$business->slug}/chart")
             ->assertOk()
             ->assertJson([
                 "data" => [

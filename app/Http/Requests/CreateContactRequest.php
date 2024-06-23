@@ -7,7 +7,7 @@ use App\Models\Enums\ContactType;
 use App\Rules\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreContactRequest extends FormRequest
+class CreateContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

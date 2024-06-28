@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Mail;
 
 describe('it can action broadcasts', function () {
 
+    beforeEach(function() {
+        $this->actingAs($this->unitTestUser());
+    });
+
     it('can create a broadcast', function (Business $business) {
         Mail::fake();
 

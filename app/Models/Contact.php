@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use App\Domain\Transports\EmailTransport;
-use App\Domain\Transports\SmsTransport;
-use App\Domain\Transports\Transport;
-use App\Domain\Twilio\SmsClient;
 use App\Exceptions\ContactAlreadyExistsException;
+use App\Models\Enums\ContactStatus;
 use App\Models\Enums\ContactType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Contact extends Model
 {
@@ -28,6 +26,11 @@ class Contact extends Model
         return $this->belongsTo(Business::class);
     }
 
+    public function messages(): HasMany
+    {
+        return $this->hasMany(ContactMessageHistory::class);
+    }
+
     public static function build(
         Business $business,
         ContactType $type,
@@ -38,25 +41,49 @@ class Contact extends Model
             'value' => $value,
         ];
 
-        if ($business->contacts()->where($payload)->exists()) {
-            throw new ContactAlreadyExistsException();
+        $existing = $business
+            ->contacts()
+            ->where($payload)
+            ->first();
+
+        // we allow people who have unsubscribed to resubscribe
+        // currently this allows them to get the incentive/discount
+        // again, this is an edge case and we'll watch for abuse
+        if ($existing && $existing->status()->isUnsubscribed()) {
+            $existing->resubscribe();
+            return $existing;
+        } else {
+            if ($existing) {
+                throw new ContactAlreadyExistsException();
+            }
         }
 
         return $business->contacts()->create($payload);
+    }
+
+    public function resubscribe(): void
+    {
+        UnsubscribeLog::resubscribed($this);
+
+        $this->unsubscribed_at = null;
+        $this->save();
     }
 
     public function unsubscribe(): void
     {
         UnsubscribeLog::fromContact($this);
 
-        $this->delete();
+        $this->unsubscribed_at = now();
+        $this->save();
     }
 
-    public function transport(): Transport
+    public function status(): ContactStatus
     {
-        return match ($this->channel) {
-            ContactType::Phone => new SmsTransport(resolve(SmsClient::class), $this),
-            ContactType::Email => new EmailTransport($this)
-        };
+        if ($this->unsubscribed_at !== null) {
+            return ContactStatus::Unsubscribed;
+        }
+
+        return ContactStatus::Subscribed;
     }
+
 }

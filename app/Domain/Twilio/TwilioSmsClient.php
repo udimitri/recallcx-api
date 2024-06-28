@@ -2,6 +2,7 @@
 
 namespace App\Domain\Twilio;
 
+use App\Exceptions\BusinessNotConfiguredForSms;
 use App\Models\Contact;
 use Twilio\Rest\Client as BaseTwilioClient;
 
@@ -29,6 +30,11 @@ class TwilioSmsClient implements SmsClient
     public function send(Contact $contact, string $content): void
     {
         $business = $contact->business;
+
+        if (!$business->twilio_account_id || !$business->twilio_messaging_service_id) {
+            throw new BusinessNotConfiguredForSms();
+        }
+
         $client = $this->getBaseTwilioClientForSubaccount($business->twilio_account_id);
 
         $client->messages->create($contact->value, [

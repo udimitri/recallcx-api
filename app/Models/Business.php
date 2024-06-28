@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Business extends Model
@@ -44,6 +45,11 @@ class Business extends Model
     public function broadcasts(): HasMany
     {
         return $this->hasMany(Broadcast::class);
+    }
+
+    public function messages(): HasManyThrough
+    {
+        return $this->hasManyThrough(ContactMessageHistory::class, Contact::class);
     }
 
     public static function findByTwilioId(string $account_id): ?self

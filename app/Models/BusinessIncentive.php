@@ -23,12 +23,16 @@ class BusinessIncentive extends Model
         return $this->belongsTo(Business::class);
     }
 
-    public static function build(Business $business, IncentiveType $type, string $value): self
-    {
-        return self::query()->create([
-            'business_id' => $business->id,
+    public static function build(
+        Business $business,
+        IncentiveType $type,
+        string $value,
+        ?string $disclaimer = null
+    ): self {
+        return $business->business_incentive()->create([
             'type' => $type,
-            'value' => $value
+            'value' => $value,
+            'disclaimer' => $disclaimer
         ]);
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Domain\Messenger\Messages\BroadcastMessage;
+use App\Domain\Messenger\Messenger;
 use App\Models\Broadcast;
 use App\Models\Contact;
 use Illuminate\Bus\Queueable;
@@ -28,11 +30,8 @@ class SendBroadcast implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(Messenger $messenger): void
     {
-        $transport = $this->contact->transport();
-
-        $transport->sendBroadcast($this->broadcast);
-
+        $messenger->send($this->contact, new BroadcastMessage($this->broadcast));
     }
 }

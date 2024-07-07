@@ -41,7 +41,7 @@ return [
     ],
 
     'clerk' => [
-        'token' => 'test'
+        'token' => env('CLERK_TOKEN')
     ]
 
 ];

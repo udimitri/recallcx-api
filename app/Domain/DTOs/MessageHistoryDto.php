@@ -13,7 +13,7 @@ class MessageHistoryDto implements Arrayable
         private int $id,
         private int $contact_id,
         private MessageType $type,
-        private int $broadcast_id,
+        private ?int $broadcast_id,
         private ?string $subject,
         private string $message,
         private Carbon $created_at,

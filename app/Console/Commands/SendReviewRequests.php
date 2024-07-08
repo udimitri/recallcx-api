@@ -27,10 +27,14 @@ class SendReviewRequests extends Command
         $this->info("Found {$targets->count()} target(s) requiring review requests!");
 
         foreach ($targets as $target) {
-            $messenger->send($target, new ReviewRequestMessage());
-
             $target->review_request_sent_at = Carbon::now();
             $target->save();
+
+            try {
+                $messenger->send($target, new ReviewRequestMessage());
+            } catch (\Throwable $throwable) {
+                report($throwable);
+            }
 
             $this->info("Sent review request for contact #{$target->id} on {$target->channel->value}.");
         }

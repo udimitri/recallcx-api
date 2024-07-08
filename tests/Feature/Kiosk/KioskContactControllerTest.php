@@ -6,6 +6,7 @@ use App\Models\Business;
 use App\Models\Contact;
 use App\Models\Enums\ContactStatus;
 use App\Models\Enums\ContactType;
+use App\Models\Enums\MessageType;
 use App\Models\UnsubscribeLog;
 use Illuminate\Support\Facades\Mail;
 use Mockery\MockInterface;
@@ -27,6 +28,9 @@ describe('it can store contacts', function () {
         ])->first();
 
         expect($result)->not()->toBeNull();
+
+        expect($result->messages()->where('message_type', MessageType::Confirmation)->count())
+            ->toBe(1);
 
         Mail::assertSentCount(1);
         Mail::assertSent(EmailConfirmation::class, function (EmailConfirmation $mail) {
@@ -59,6 +63,9 @@ describe('it can store contacts', function () {
         ])->first();
 
         expect($result)->not()->toBeNull();
+
+        expect($result->messages()->where('message_type', MessageType::Confirmation)->count())
+            ->toBe(1);
     })->with('business');
 
     it('cannot store an email contact twice', function (Business $business) {

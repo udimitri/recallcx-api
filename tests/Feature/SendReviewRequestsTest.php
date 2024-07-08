@@ -44,4 +44,24 @@ describe('it can send review requests', function () {
 
     })->with('business');
 
+
+    it('wont send duplicate on exception', function (Business $business) {
+        $real_now = now();
+
+        Carbon::setTestNow($real_now->copy()->subHours(4));
+
+        $contact1 = Contact::build($business, ContactType::Email, 'dimitri+test1@recallcx.com');
+
+        Carbon::setTestNow($real_now);
+
+        $this->mock(Messenger::class, function (MockInterface $mock) {
+            $mock->shouldReceive('send')->once()->andThrow(new LogicException("Error"));
+        });
+
+        Artisan::call(SendReviewRequests::class);
+
+        expect($contact1->refresh()->review_request_sent_at)->not()->toBeNull();
+
+    })->with('business');
+
 });

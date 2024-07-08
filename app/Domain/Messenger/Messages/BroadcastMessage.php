@@ -3,11 +3,11 @@
 namespace App\Domain\Messenger\Messages;
 
 use App\Domain\Messenger\Message;
+use App\Domain\ReactEmail\ReactMailable;
 use App\Mail;
 use App\Models\Broadcast;
 use App\Models\Contact;
 use App\Models\Enums\MessageType;
-use Illuminate\Mail\Mailable;
 
 class BroadcastMessage implements Message
 {
@@ -17,7 +17,7 @@ class BroadcastMessage implements Message
     ) {
     }
 
-    public function email(Contact $contact): Mailable
+    public function email(Contact $contact): ReactMailable
     {
         return new Mail\BroadcastEmail($this->broadcast, $contact);
     }

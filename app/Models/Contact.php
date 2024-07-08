@@ -14,12 +14,9 @@ class Contact extends Model
 
     protected $guarded = [];
 
-    protected function casts(): array
-    {
-        return [
-            'channel' => ContactType::class
-        ];
-    }
+    protected $casts = [
+        'channel' => ContactType::class
+    ];
 
     public function business(): BelongsTo
     {

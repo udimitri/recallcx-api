@@ -3,15 +3,15 @@
 namespace App\Domain\Messenger\Messages;
 
 use App\Domain\Messenger\Message;
+use App\Domain\ReactEmail\ReactMailable;
 use App\Mail;
 use App\Models\Contact;
 use App\Models\Enums\MessageType;
-use Illuminate\Mail\Mailable;
 
 class ReviewRequestMessage implements Message
 {
 
-    public function email(Contact $contact): Mailable
+    public function email(Contact $contact): ReactMailable
     {
         return new Mail\ReviewRequest($contact);
     }

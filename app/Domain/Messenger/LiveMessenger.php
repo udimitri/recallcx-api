@@ -24,17 +24,17 @@ class LiveMessenger implements Messenger
 
         $broadcast = $message->broadcast ?? null;
 
-        if ($contact->channel === ContactType::Phone) {
+        if ($contact->channel->isPhone()) {
             $sms = $message->sms($contact);
             $this->smsClient->send($contact, $sms);
 
             ContactMessageHistory::build($contact, $message->type(), $broadcast, null, $sms);
             return;
-        } else if ($contact->channel === ContactType::Email) {
+        } else if ($contact->channel->isEmail()) {
             $mail = $message->email($contact);
             Mail::to($contact->value)->send($mail);
 
-            ContactMessageHistory::build($contact, $message->type(), $broadcast, $mail->subject, $mail->render());
+            ContactMessageHistory::build($contact, $message->type(), $broadcast, $mail->envelope()->subject, $mail->render());
             return;
         }
 

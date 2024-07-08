@@ -3,10 +3,13 @@
 namespace App\Domain\ReactEmail;
 
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Support\HtmlString;
 
-class ReactMailable extends Mailable
+abstract class ReactMailable extends Mailable
 {
+    public abstract function envelope(): Envelope;
+
     protected function buildView(): array
     {
         return array_map(

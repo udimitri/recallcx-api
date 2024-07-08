@@ -2,13 +2,13 @@
 
 namespace App\Domain\Messenger;
 
+use App\Domain\ReactEmail\ReactMailable;
 use App\Models\Contact;
 use App\Models\Enums\MessageType;
-use Illuminate\Mail\Mailable;
 
 interface Message
 {
-    public function email(Contact $contact): Mailable;
+    public function email(Contact $contact): ReactMailable;
 
     public function sms(Contact $contact): string;
 

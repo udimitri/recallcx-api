@@ -15,7 +15,9 @@ class Contact extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'channel' => ContactType::class
+        'channel' => ContactType::class,
+        'review_request_sent_at' => 'datetime',
+        'unsubscribed_at' => 'datetime',
     ];
 
     public function business(): BelongsTo

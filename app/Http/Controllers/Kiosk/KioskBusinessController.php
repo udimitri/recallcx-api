@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Kiosk;
 use App\Models\Business;
 use Illuminate\Http\JsonResponse;
 
-class BusinessController
+class KioskBusinessController
 {
     public function get(Business $business): JsonResponse
     {
@@ -18,7 +18,11 @@ class BusinessController
                 'owner' => [
                     'first_name' => $business->business_owner?->first_name,
                     'phone_number' => $business->business_owner?->phone_number,
-                ]
+                ],
+                'incentive' => $business->business_incentive ? [
+                    'value' => $business->business_incentive->formatted(),
+                    'disclaimer' => $business->business_incentive->disclaimer,
+                ] : null,
             ],
         ]);
     }

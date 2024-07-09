@@ -38,6 +38,10 @@ return [
     'twilio' => [
         'primary_sid' => env('TWILIO_PRIMARY_SID'),
         'auth_token' => env('TWILIO_AUTH_TOKEN'),
+    ],
+
+    'clerk' => [
+        'token' => env('CLERK_TOKEN')
     ]
 
 ];

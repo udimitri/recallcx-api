@@ -1,24 +1,38 @@
 <?php
 
 use App\Http\Controllers\App\BroadcastController;
+use App\Http\Controllers\App\BusinessIncentiveController;
+use App\Http\Controllers\App\ContactController;
 use App\Http\Controllers\App\DashboardController;
-use App\Http\Controllers\Kiosk\BusinessController;
-use App\Http\Controllers\Kiosk\ContactController;
+use App\Http\Controllers\App\MessageHistoryController;
+use App\Http\Controllers\Kiosk\KioskBusinessController;
+use App\Http\Controllers\Kiosk\KioskContactController;
 use App\Http\Controllers\Kiosk\ReviewRecoveryController;
 use App\Http\Controllers\Webhook\TwilioWebhookController;
+use App\Http\Middleware\BusinessAuth;
 use Illuminate\Support\Facades\Route;
 
 // kiosk
-Route::post('/webhook/twilio', [ TwilioWebhookController::class, 'receive' ]);
+Route::group([ 'prefix' => 'kiosk' ], function () {
+    Route::get('/businesses/{business:slug}', [ KioskBusinessController::class, 'get' ]);
 
-Route::get('/kiosk/businesses/{business:slug}', [ BusinessController::class, 'get' ]);
+    Route::post('/businesses/{business:slug}/review-recovery', [ ReviewRecoveryController::class, 'store' ]);
 
-Route::post('/kiosk/businesses/{business:slug}/review-recovery', [ ReviewRecoveryController::class, 'store' ]);
+    Route::post('/businesses/{business:slug}/contacts', [ KioskContactController::class, 'store' ]);
+    Route::post('/businesses/{business:slug}/contacts/unsubscribe', [ KioskContactController::class, 'unsubscribe' ]);
 
-Route::post('/kiosk/businesses/{business:slug}/contacts', [ ContactController::class, 'store' ]);
-Route::post('/kiosk/businesses/{business:slug}/contacts/unsubscribe', [ ContactController::class, 'unsubscribe' ]);
+});
 
 // app
-Route::get('/app/businesses/{business:slug}/stats', [ DashboardController::class, 'stats' ]);
-Route::get('/app/businesses/{business:slug}/chart', [ DashboardController::class, 'chart' ]);
-Route::post('/app/businesses/{business:slug}/broadcasts', [ BroadcastController::class, 'store' ]);
+Route::group([ 'prefix' => 'app', 'middleware' => [ 'auth:clerk', BusinessAuth::class ] ], function () {
+    Route::get('/businesses/{business:slug}/stats', [ DashboardController::class, 'stats' ]);
+    Route::get('/businesses/{business:slug}/chart', [ DashboardController::class, 'chart' ]);
+    Route::post('/businesses/{business:slug}/broadcasts', [ BroadcastController::class, 'store' ]);
+
+    Route::get('/businesses/{business:slug}/contacts', [ ContactController::class, 'list' ]);
+    Route::get('/businesses/{business:slug}/messages', [ MessageHistoryController::class, 'list' ]);
+
+    Route::put('/businesses/{business:slug}/incentive', [ BusinessIncentiveController::class, 'update' ]);
+});
+
+Route::post('/webhook/twilio', [ TwilioWebhookController::class, 'receive' ]);

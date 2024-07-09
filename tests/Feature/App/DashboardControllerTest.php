@@ -7,6 +7,10 @@ use Carbon\Carbon;
 
 describe('it can generate dashboard stats', function () {
 
+    beforeEach(function () {
+        $this->actingAs($this->unitTestUser());
+    });
+
     it('can generate audience chart stats', function (Business $business) {
         Carbon::setTestNow("2024-06-01 10:00 UTC");
         Contact::build($business, ContactType::Email, 'dimitri+test1@recallcx.com');

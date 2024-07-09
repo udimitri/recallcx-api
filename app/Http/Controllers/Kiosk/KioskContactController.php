@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Kiosk;
 
 use App\Domain\Base64URL;
+use App\Domain\Messenger\Messages\SignupConfirmationMessage;
+use App\Domain\Messenger\Messenger;
 use App\Domain\Twilio\LookupClient;
 use App\Http\Requests\CreateContactRequest;
 use App\Models\Business;
@@ -11,10 +13,11 @@ use App\Models\Enums\ContactType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class ContactController
+class KioskContactController
 {
     public function __construct(
-        private LookupClient $lookupClient
+        private LookupClient $lookupClient,
+        private Messenger $messenger,
     ) {
     }
 
@@ -27,7 +30,7 @@ class ContactController
 
         $contact = Contact::build($business, $request->type(), $value);
 
-        $contact->transport()->sendConfirmation();
+        $this->messenger->send($contact, new SignupConfirmationMessage());
 
         return response()->noContent();
     }

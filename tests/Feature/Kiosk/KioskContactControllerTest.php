@@ -4,7 +4,9 @@ use App\Domain\Twilio\SmsClient;
 use App\Mail\EmailConfirmation;
 use App\Models\Business;
 use App\Models\Contact;
+use App\Models\Enums\ContactStatus;
 use App\Models\Enums\ContactType;
+use App\Models\Enums\MessageType;
 use App\Models\UnsubscribeLog;
 use Illuminate\Support\Facades\Mail;
 use Mockery\MockInterface;
@@ -26,6 +28,9 @@ describe('it can store contacts', function () {
         ])->first();
 
         expect($result)->not()->toBeNull();
+
+        expect($result->messages()->where('message_type', MessageType::Confirmation)->count())
+            ->toBe(1);
 
         Mail::assertSentCount(1);
         Mail::assertSent(EmailConfirmation::class, function (EmailConfirmation $mail) {
@@ -58,6 +63,9 @@ describe('it can store contacts', function () {
         ])->first();
 
         expect($result)->not()->toBeNull();
+
+        expect($result->messages()->where('message_type', MessageType::Confirmation)->count())
+            ->toBe(1);
     })->with('business');
 
     it('cannot store an email contact twice', function (Business $business) {
@@ -90,7 +98,10 @@ describe('it can store contacts', function () {
     it('can unsubscribe from email', function (Business $business) {
         Mail::fake();
 
-        Contact::build($business, ContactType::Email, "dimitri@recallcx.com");
+        $contact = Contact::build($business, ContactType::Email, "dimitri@recallcx.com");
+
+        expect($contact->unsubscribed_at)->toBeNull()
+            ->and($contact->status())->toBe(ContactStatus::Subscribed);
 
         $this->postJson("/api/kiosk/businesses/{$business->slug}/contacts/unsubscribe", [
             "encoded_email" => "ZGltaXRyaUByZWNhbGxjeC5jb20"
@@ -98,7 +109,8 @@ describe('it can store contacts', function () {
 
         $result = Contact::query()->where('value', 'dimitri@recallcx.com')->first();
 
-        expect($result)->toBeNull();
+        expect($result->unsubscribed_at)->not()->toBeNull()
+            ->and($result->status())->toBe(ContactStatus::Unsubscribed);
 
         $result = UnsubscribeLog::query()->where('value', 'dimitri@recallcx.com')->first();
 

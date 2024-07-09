@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Domain\Clerk\ClerkUser;
 use App\Domain\Twilio\LookupClient;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -18,5 +19,10 @@ abstract class TestCase extends BaseTestCase
         $this->app->singleton(LookupClient::class, function () {
             return new StubLookupClient();
         });
+    }
+
+    public function unitTestUser(): ClerkUser
+    {
+        return new ClerkUser('user_test');
     }
 }

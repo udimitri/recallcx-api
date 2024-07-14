@@ -48,8 +48,8 @@ class BroadcastController
     {
         $formatted_phone_number = $this->lookupClient->format($request->input('phone_number'));
 
-        $email_contact = Contact::build($business, ContactType::Email, $request->input('email_address'));
-        $phone_contact = Contact::build($business, ContactType::Phone, $formatted_phone_number);
+        $email_contact = Contact::build($business, ContactType::Email, $request->input('email_address'), return_existing: true);
+        $phone_contact = Contact::build($business, ContactType::Phone, $formatted_phone_number, return_existing: true);
 
         $message = new TestBroadcastMessage(
             $request->input('subject'),

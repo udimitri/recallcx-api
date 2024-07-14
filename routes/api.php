@@ -10,6 +10,7 @@ use App\Http\Controllers\Kiosk\KioskContactController;
 use App\Http\Controllers\Kiosk\ReviewRecoveryController;
 use App\Http\Controllers\Webhook\TwilioWebhookController;
 use App\Http\Middleware\BusinessAuth;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Support\Facades\Route;
 
 // kiosk
@@ -27,7 +28,11 @@ Route::group([ 'prefix' => 'kiosk' ], function () {
 Route::group([ 'prefix' => 'app', 'middleware' => [ 'auth:clerk', BusinessAuth::class ] ], function () {
     Route::get('/businesses/{business:slug}/stats', [ DashboardController::class, 'stats' ]);
     Route::get('/businesses/{business:slug}/chart', [ DashboardController::class, 'chart' ]);
-    Route::post('/businesses/{business:slug}/broadcasts', [ BroadcastController::class, 'store' ]);
+
+    Route::withoutMiddleware([ TrimStrings::class])->group(function () {
+        Route::post('/businesses/{business:slug}/broadcasts', [ BroadcastController::class, 'store' ]);
+        Route::post('/businesses/{business:slug}/broadcasts/send-test', [ BroadcastController::class, 'sendTestMessage' ]);
+    });
 
     Route::get('/businesses/{business:slug}/contacts', [ ContactController::class, 'list' ]);
     Route::get('/businesses/{business:slug}/messages', [ MessageHistoryController::class, 'list' ]);

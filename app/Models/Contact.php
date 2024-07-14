@@ -33,7 +33,8 @@ class Contact extends Model
     public static function build(
         Business $business,
         ContactType $type,
-        string $value
+        string $value,
+        bool $return_existing = false
     ): self {
         $payload = [
             'channel' => $type,
@@ -53,6 +54,9 @@ class Contact extends Model
             return $existing;
         } else {
             if ($existing) {
+                if ($return_existing) {
+                    return $existing;
+                }
                 throw new ContactAlreadyExistsException();
             }
         }

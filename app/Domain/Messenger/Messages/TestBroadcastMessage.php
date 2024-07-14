@@ -31,6 +31,6 @@ class TestBroadcastMessage implements Message
 
     public function type(): MessageType
     {
-        return MessageType::Broadcast;
+        return MessageType::TestBroadcast;
     }
 }

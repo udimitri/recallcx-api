@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Domain\Twilio\LookupClient;
+use App\Rules\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateBroadcastRequest extends FormRequest
+class SendTestBroadcastRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,23 +21,13 @@ class CreateBroadcastRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(LookupClient $lookupClient): array
     {
         return [
-            'subject' => [
-                'required',
-                'string',
-                'max:50'
-            ],
-            'message' => [
-                'required',
-                'min:10',
-                'max:320'
-            ],
-            'send_at' => [
-                'required',
-                'date_format:Y-m-d H:i:s'
-            ]
+            'subject' => [ 'required', 'string', 'max:50' ],
+            'message' => [ 'required', 'min:10', 'max:320' ],
+            'email_address' => [ 'required', 'string', 'email' ],
+            'phone_number' => [ 'string', new PhoneNumber($lookupClient) ],
         ];
     }
 

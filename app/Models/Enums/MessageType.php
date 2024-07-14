@@ -7,4 +7,6 @@ enum MessageType: string
     case Confirmation = 'confirmation';
     case ReviewRequest = 'review_request';
     case Broadcast = 'broadcast';
+
+    case TestBroadcast = 'test_broadcast';
 }

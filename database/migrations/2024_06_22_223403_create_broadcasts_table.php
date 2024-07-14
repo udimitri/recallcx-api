@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Business::class)->constrained();
             $table->string('status');
-            $table->string('channel');
             $table->text('subject')->nullable();
             $table->text('message');
             $table->timestamp('send_at');

@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use App\Domain\ReactEmail\ReactMailable;
-use App\Models\Broadcast;
 use App\Models\Contact;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailables\Content;
@@ -17,7 +16,8 @@ class BroadcastEmail extends ReactMailable
     private TenantEmailConfiguration $configuration;
 
     public function __construct(
-        private Broadcast $broadcast,
+        private string $broadcast_subject,
+        private string $broadcast_message,
         private Contact $contact
     ) {
         $this->configuration = TenantEmailConfiguration::for($this->contact->business);
@@ -27,17 +27,17 @@ class BroadcastEmail extends ReactMailable
     {
         return new Envelope(
             from: $this->configuration->from(),
-            subject: $this->broadcast->subject,
+            subject: $this->broadcast_subject,
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            view: 'broadcast',
+            view: 'marketing-email',
             with: [
                 'companyName' => $this->contact->business->name,
-                'message' => $this->broadcast->message,
+                'message' => $this->broadcast_message,
                 'unsubscribeUrl' => $this->configuration->unsubscribeUrl($this->contact->value),
             ]
         );

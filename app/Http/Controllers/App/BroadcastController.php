@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Domain\DTOs\BroadcastDto;
 use App\Domain\DTOs\ContactDto;
 use App\Domain\Messenger\Messages\TestBroadcastMessage;
 use App\Domain\Messenger\Messenger;
 use App\Domain\Twilio\LookupClient;
 use App\Http\Requests\CreateBroadcastRequest;
 use App\Http\Requests\SendTestBroadcastRequest;
+use App\Models\Broadcast;
 use App\Models\Business;
 use App\Models\Contact;
 use App\Models\Enums\BroadcastStatus;
 use App\Models\Enums\ContactType;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class BroadcastController
@@ -30,17 +33,26 @@ class BroadcastController
             ->through(fn (Contact $contact) => ContactDto::fromContact($contact));
     }
 
-    public function store(Business $business, CreateBroadcastRequest $request): Response
+    public function get(Business $business, Broadcast $broadcast): JsonResponse
     {
-        // TODO: remove channel
-        $business->broadcasts()->create([
+        return response()->json([
+            'broadcast' => BroadcastDto::fromBroadcast($broadcast)->toArray(),
+        ]);
+    }
+
+
+    public function store(Business $business, CreateBroadcastRequest $request): JsonResponse
+    {
+        $broadcast = $business->broadcasts()->create([
             'status' => BroadcastStatus::Created,
             'subject' => $request->input('subject'),
             'message' => $request->input('message'),
             'send_at' => $request->input('send_at')
         ]);
 
-        return response()->noContent();
+        return response()->json([
+            'broadcast' => BroadcastDto::fromBroadcast($broadcast)->toArray(),
+        ]);
     }
 
 

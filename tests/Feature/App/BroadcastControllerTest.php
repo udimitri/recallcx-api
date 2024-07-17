@@ -4,7 +4,7 @@ use App\Domain\Twilio\SmsClient;
 use App\Mail\BroadcastEmail;
 use App\Models\Business;
 use App\Models\Contact;
-use App\Models\Enums\Channel;
+use App\Models\Enums\BroadcastStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Mockery\MockInterface;
@@ -12,7 +12,7 @@ use Tests\Stubs\StubLookupClient;
 
 describe('it can action broadcasts', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
         $this->actingAs($this->unitTestUser());
     });
 
@@ -23,7 +23,11 @@ describe('it can action broadcasts', function () {
             'subject' => 'Up to 70% off this weekend!',
             'message' => 'Get up to 70% off this Friday and Saturday. Hurry, there is limited stock!',
             'send_at' => Carbon::now()->toDateTimeString(),
-        ])->assertNoContent();
+        ])->assertJsonStructure([
+            'broadcast' => [
+                'id'
+            ]
+        ]);
 
     })->with('business');
 
@@ -106,5 +110,32 @@ describe('it can action broadcasts', function () {
         Mail::assertSent(BroadcastEmail::class, function (BroadcastEmail $mail) {
             return $mail->assertTo('dimitri@recallcx.com');
         });
+    })->with('business');
+
+    it('can view a broadcast', function (Business $business) {
+        Mail::fake();
+
+        $now = Carbon::make('2024-07-16 02:30:00');
+        Carbon::setTestNow($now);
+
+        $broadcast = $business->broadcasts()->create([
+            'status' => BroadcastStatus::Created,
+            'subject' => 'Up to 70% off this weekend!',
+            'message' => 'Get up to 70% off this Friday and Saturday. Hurry, there is limited stock!',
+            'send_at' => Carbon::make('2024-08-10 12:30:00')
+        ]);
+
+        $this->getJson("/api/app/businesses/{$business->slug}/broadcasts/{$broadcast->id}")
+            ->assertJson([
+                "broadcast" => [
+                    "id" => $broadcast->id,
+                    "status" => "created",
+                    "subject" => "Up to 70% off this weekend!",
+                    "message" => "Get up to 70% off this Friday and Saturday. Hurry, there is limited stock!",
+                    "send_at" => "2024-08-10T12:30:00.000000Z",
+                    "created_at" => "2024-07-16T02:30:00.000000Z"
+                ]
+            ]);
+
     })->with('business');
 });

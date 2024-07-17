@@ -4,9 +4,9 @@ import {
     Head,
     Html,
     Link,
-    Button,
     Text,
-    Tailwind, Section, Img,
+    Tailwind,
+    Img,
 } from "@react-email/components";
 import * as React from "react";
 import {emailTailwindConf} from "./config";

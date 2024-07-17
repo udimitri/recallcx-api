@@ -34,6 +34,8 @@ Route::group([ 'prefix' => 'app', 'middleware' => [ 'auth:clerk', BusinessAuth::
         Route::post('/businesses/{business:slug}/broadcasts/send-test', [ BroadcastController::class, 'sendTestMessage' ]);
     });
 
+    Route::get('/businesses/{business:slug}/broadcasts/{broadcast}', [ BroadcastController::class, 'get' ]);
+
     Route::get('/businesses/{business:slug}/contacts', [ ContactController::class, 'list' ]);
     Route::get('/businesses/{business:slug}/messages', [ MessageHistoryController::class, 'list' ]);
 

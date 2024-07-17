@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Domain\Messenger\Message;
-use App\Models\Enums\Channel;
 use App\Models\Enums\MessageType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

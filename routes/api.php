@@ -26,8 +26,7 @@ Route::group([ 'prefix' => 'kiosk' ], function () {
 
 // app
 Route::group([ 'prefix' => 'app', 'middleware' => [ 'auth:clerk', BusinessAuth::class ] ], function () {
-    Route::get('/businesses/{business:slug}/stats', [ DashboardController::class, 'stats' ]);
-    Route::get('/businesses/{business:slug}/chart', [ DashboardController::class, 'chart' ]);
+    Route::get('/businesses/{business:slug}/dashboard', [ DashboardController::class, 'dashboard' ]);
 
     Route::withoutMiddleware([ TrimStrings::class])->group(function () {
         Route::post('/businesses/{business:slug}/broadcasts', [ BroadcastController::class, 'store' ]);

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'circularchic',
             'name' => 'CHIC Circular Fashion',
             'google_review_url' => 'https://g.page/r/CRMi-N-HNuIEEBM/review',
+            'place_id' => 'ChIJ-9T48SoioFMREyL434c24gQ',
         ]);
 
         BusinessOwner::create([

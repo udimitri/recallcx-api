@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Domain\Clerk\ClerkApi;
 use App\Domain\Clerk\ClerkGuard;
 use App\Domain\Clerk\ClerkProvider;
+use App\Domain\Google\LivePlacesApi;
+use App\Domain\Google\PlacesApi;
 use App\Domain\Messenger\LiveMessenger;
 use App\Domain\Messenger\Messenger;
 use App\Domain\Twilio\LookupClient;
@@ -42,6 +44,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(Messenger::class, function (Application $app) {
             return new LiveMessenger(
                 $app->make(SmsClient::class)
+            );
+        });
+
+
+        $this->app->bind(PlacesApi::class, function (Application $app) {
+            return new LivePlacesApi(
+                config('services.google.key')
             );
         });
 

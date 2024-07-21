@@ -32,6 +32,11 @@ class Business extends Model
         return $this->hasMany(Contact::class);
     }
 
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(RatingHistory::class);
+    }
+
     public function unsubscribe_logs(): HasMany
     {
         return $this->hasMany(UnsubscribeLog::class);

@@ -24,8 +24,8 @@ class LivePlacesApi implements PlacesApi
             ->json();
 
         return new PlacesRatingData(
-            rating: $response['rating'],
-            review_count: $response['userRatingCount']
+            rating: $response['rating'] ?? 0,
+            review_count: $response['userRatingCount'] ?? 0
         );
     }
 }

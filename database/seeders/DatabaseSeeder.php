@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'CHIC Circular Fashion',
             'google_review_url' => 'https://g.page/r/CRMi-N-HNuIEEBM/review',
             'place_id' => 'ChIJ-9T48SoioFMREyL434c24gQ',
+            'address' => '12529 102 Ave NW, Edmonton, AB T5N 0M4',
         ]);
 
         BusinessOwner::create([

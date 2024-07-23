@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Reporting;
+namespace App\Domain\Reporting\Last7Report;
 
 use App\Models\Business;
 use Carbon\Carbon;
@@ -14,10 +14,12 @@ class ReviewsLast7Report extends Last7Report
 
     public function query(Carbon $date): int
     {
-        return $this->business
+        $record = $this->business
             ->ratings()
-            ->whereDate('date', $date->copy()->endOfDay()->utc())
+            ->whereDate('date', '<=', $date->copy()->endOfDay()->utc())
             ->orderByDesc('date')
-            ->count();
+            ->first();
+
+        return $record->review_count ?? 0;
     }
 }

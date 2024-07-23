@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Reporting;
+namespace App\Domain\Reporting\Last7Report;
 
 use App\Models\Business;
 use Carbon\Carbon;

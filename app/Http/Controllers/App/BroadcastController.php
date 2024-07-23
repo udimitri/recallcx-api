@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\App;
 
 use App\Domain\DTOs\BroadcastDto;
-use App\Domain\DTOs\ContactDto;
 use App\Domain\Messenger\Messages\TestBroadcastMessage;
 use App\Domain\Messenger\Messenger;
 use App\Domain\Twilio\LookupClient;
@@ -30,7 +29,7 @@ class BroadcastController
         return $business->broadcasts()
             ->orderByDesc('created_at')
             ->jsonPaginate()
-            ->through(fn (Contact $contact) => ContactDto::fromContact($contact));
+            ->through(fn (Broadcast $broadcast) => BroadcastDto::fromBroadcast($broadcast));
     }
 
     public function get(Business $business, Broadcast $broadcast): JsonResponse

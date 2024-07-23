@@ -21,6 +21,7 @@ class ContactController
     {
         return $business
             ->contacts()
+            ->whereNotNull('review_request_sent_at')
             ->orderByDesc('review_request_sent_at')
             ->jsonPaginate()
             ->through(fn (Contact $contact) => ReviewRequestDto::fromContact($contact));

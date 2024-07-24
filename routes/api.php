@@ -38,6 +38,8 @@ Route::group([ 'prefix' => 'app', 'middleware' => [ 'auth:clerk', BusinessAuth::
 
     Route::get('/businesses/{business:slug}/broadcasts/{broadcast}', [ BroadcastController::class, 'get' ]);
 
+    Route::get('/businesses/{business:slug}/contacts/overview', [ ContactController::class, 'overview' ]);
+
     Route::get('/businesses/{business:slug}/contacts', [ ContactController::class, 'list' ]);
     Route::get('/businesses/{business:slug}/review-requests', [ ContactController::class, 'reviewRequestHistory' ]);
     Route::get('/businesses/{business:slug}/messages', [ MessageHistoryController::class, 'list' ]);

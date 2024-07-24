@@ -16,9 +16,9 @@ class ContactController
     {
         return response()->json([
             'metrics' => [
-                'total' => $business->contacts()->count(),
-                'email' => $business->contacts()->where('channel', ContactType::Email)->count(),
-                'phone' => $business->contacts()->where('channel', ContactType::Phone)->count(),
+                'subscribed' => $business->contacts()->whereNull('unsubscribed_at')->count(),
+                'email' => $business->contacts()->whereNull('unsubscribed_at')->where('channel', ContactType::Email)->count(),
+                'phone' => $business->contacts()->whereNull('unsubscribed_at')->where('channel', ContactType::Phone)->count(),
                 'unsubscribed' => $business->contacts()->whereNotNull('unsubscribed_at')->count(),
             ],
             'last7' => (new AudienceLast7Report($business))->get()

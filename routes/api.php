@@ -5,6 +5,7 @@ use App\Http\Controllers\App\BusinessIncentiveController;
 use App\Http\Controllers\App\ContactController;
 use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\MessageHistoryController;
+use App\Http\Controllers\App\ReviewController;
 use App\Http\Controllers\Kiosk\KioskBusinessController;
 use App\Http\Controllers\Kiosk\KioskContactController;
 use App\Http\Controllers\Kiosk\ReviewRecoveryController;
@@ -27,6 +28,8 @@ Route::group([ 'prefix' => 'kiosk' ], function () {
 // app
 Route::group([ 'prefix' => 'app', 'middleware' => [ 'auth:clerk', BusinessAuth::class ] ], function () {
     Route::get('/businesses/{business:slug}/dashboard', [ DashboardController::class, 'dashboard' ]);
+
+    Route::get('/businesses/{business:slug}/reviews/overview', [ ReviewController::class, 'overview' ]);
 
     Route::withoutMiddleware([ TrimStrings::class])->group(function () {
         Route::post('/businesses/{business:slug}/broadcasts', [ BroadcastController::class, 'store' ]);

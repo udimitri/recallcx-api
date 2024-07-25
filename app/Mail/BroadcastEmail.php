@@ -37,6 +37,8 @@ class BroadcastEmail extends ReactMailable
             view: 'marketing-email',
             with: [
                 'companyName' => $this->contact->business->name,
+                'companyAddress' => $this->contact->business->address,
+                'companyLogo' => $this->contact->business->logo,
                 'message' => $this->broadcast_message,
                 'unsubscribeUrl' => $this->configuration->unsubscribeUrl($this->contact->value),
             ]

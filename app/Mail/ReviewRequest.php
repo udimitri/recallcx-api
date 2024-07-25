@@ -36,6 +36,8 @@ class ReviewRequest extends ReactMailable
             view: 'review-request',
             with: [
                 'companyName' => $this->contact->business->name,
+                'companyAddress' => $this->contact->business->address,
+                'companyLogo' => $this->contact->business->logo,
                 'reviewUrl' => "https://{$this->contact->business->slug}.onrecallcx.com/review",
                 'unsubscribeUrl' => $this->configuration->unsubscribeUrl($this->contact->value),
             ]

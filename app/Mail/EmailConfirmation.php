@@ -36,6 +36,7 @@ class EmailConfirmation extends ReactMailable
             view: 'email-confirmation',
             with: [
                 'companyName' => $this->contact->business->name,
+                'companyAddress' => $this->contact->business->address,
                 'discount' => $this->contact->business->business_incentive->formatted(),
                 'unsubscribeUrl' => $this->configuration->unsubscribeUrl($this->contact->value),
             ]

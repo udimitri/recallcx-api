@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\App\BroadcastController;
+use App\Http\Controllers\App\BusinessController;
 use App\Http\Controllers\App\BusinessIncentiveController;
 use App\Http\Controllers\App\ContactController;
 use App\Http\Controllers\App\DashboardController;
@@ -27,6 +28,8 @@ Route::group([ 'prefix' => 'kiosk' ], function () {
 
 // app
 Route::group([ 'prefix' => 'app', 'middleware' => [ 'auth:clerk', BusinessAuth::class ] ], function () {
+    Route::get('/businesses/{business:slug}', [ BusinessController::class, 'get' ]);
+
     Route::get('/businesses/{business:slug}/dashboard', [ DashboardController::class, 'dashboard' ]);
 
     Route::get('/businesses/{business:slug}/reviews/overview', [ ReviewController::class, 'overview' ]);

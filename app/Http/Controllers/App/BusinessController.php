@@ -14,6 +14,9 @@ class BusinessController
                 'name' => $business->name,
                 'address' => $business->address,
                 'logo' => $business->logo,
+                'owner' => [
+                    'first_name' => $business->business_owner?->first_name,
+                ]
             ],
         ]);
     }

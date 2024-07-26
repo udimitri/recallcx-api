@@ -41,7 +41,7 @@ class PreviewBroadcastAudience extends Command
 
         table(
             [ 'Contact' ],
-            $audience->map(fn (Contact $contact) => [$contact->value])->toArray()
+            $audience->map(fn (Contact $contact) => [ $contact->value ])->toArray()
         );
     }
 }

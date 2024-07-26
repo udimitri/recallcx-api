@@ -19,7 +19,7 @@ class PreviewBroadcastAudience extends Command
             "Which broadcast?",
             function (string $value) {
                 if (strlen($value) > 0) {
-                    Broadcast::where('subject', 'like', "%{$value}%")
+                    return Broadcast::where('subject', 'like', "%{$value}%")
                         ->get()
                         ->mapWithKeys(
                             fn (Broadcast $broadcast) => [
@@ -39,7 +39,7 @@ class PreviewBroadcastAudience extends Command
         info("This broadcast will send to {$audience->count()} contacts.");
 
         table(
-            ['Contact'],
+            [ 'Contact' ],
             $audience->toArray()
         );
     }

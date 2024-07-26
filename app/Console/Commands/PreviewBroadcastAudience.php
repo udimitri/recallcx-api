@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Broadcast;
+use App\Models\Contact;
 use Illuminate\Console\Command;
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\table;
@@ -34,13 +35,13 @@ class PreviewBroadcastAudience extends Command
         );
 
         $broadcast = Broadcast::find($broadcast_id);
-        $audience = $broadcast->audience()->pluck('value');
+        $audience = $broadcast->audience()->get();
 
         info("This broadcast will send to {$audience->count()} contacts.");
 
         table(
             [ 'Contact' ],
-            $audience->toArray()
+            $audience->map(fn (Contact $contact) => [$contact->value])->toArray()
         );
     }
 }

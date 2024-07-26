@@ -7,6 +7,7 @@ use App\Models\Contact;
 use Illuminate\Console\Command;
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\table;
+use function Laravel\Prompts\info;
 
 class PreviewBroadcastAudience extends Command
 {

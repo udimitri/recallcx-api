@@ -47,9 +47,7 @@ class BroadcastController
             'status' => BroadcastStatus::Created,
             'subject' => $request->input('subject'),
             'message' => $request->input('message'),
-            'send_at' => Carbon::make($request->input('send_at'))
-                ->setTimezone("America/Edmonton")
-                ->utc()
+            'send_at' => (new Carbon($request->input('send_at'), "America/Edmonton"))->utc()
         ]);
 
         return response()->json([

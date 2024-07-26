@@ -44,7 +44,7 @@ export const MarketingEmail = (
             </Section>
 
             <Section className="max-w-[465px] rounded-[2rem] overflow-hidden bg-white px-4">
-              <Text className="bg-[#E9E9EB] px-4 py-3 rounded-xl text-sm">
+              <Text className="bg-[#E9E9EB] px-4 py-3 rounded-xl text-sm whitespace-pre-line">
                 {message}
               </Text>
             </Section>

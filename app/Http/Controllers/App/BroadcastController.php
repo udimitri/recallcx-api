@@ -13,6 +13,7 @@ use App\Models\Business;
 use App\Models\Contact;
 use App\Models\Enums\BroadcastStatus;
 use App\Models\Enums\ContactType;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -46,7 +47,9 @@ class BroadcastController
             'status' => BroadcastStatus::Created,
             'subject' => $request->input('subject'),
             'message' => $request->input('message'),
-            'send_at' => $request->input('send_at')
+            'send_at' => Carbon::make($request->input('send_at'))
+                ->setTimezone("America/Edmonton")
+                ->utc()
         ]);
 
         return response()->json([

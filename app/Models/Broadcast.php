@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Enums\BroadcastStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Broadcast extends Model
 {
@@ -14,6 +15,13 @@ class Broadcast extends Model
     public function business(): BelongsTo
     {
         return $this->belongsTo(Business::class);
+    }
+
+    public function audience(): HasMany
+    {
+        return $this->business
+            ->contacts()
+            ->whereNull('unsubscribed_at');
     }
 
     protected function casts(): array

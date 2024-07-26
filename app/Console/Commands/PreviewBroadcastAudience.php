@@ -28,6 +28,8 @@ class PreviewBroadcastAudience extends Command
                         )
                         ->all();
                 }
+
+                return [];
             }
         );
 

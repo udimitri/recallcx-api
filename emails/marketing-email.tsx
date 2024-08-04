@@ -72,7 +72,7 @@ MarketingEmail.PreviewProps = {
   companyName: "CHIC Circular Fashion",
   companyAddress: "12529 102 Ave NW, Edmonton, AB T5N 0M4",
   companyLogo: "https://recallcx.com/circularchic.png",
-  message: "Our Spring sale starts NOW! Come visit us in The High Street at 12529 102 Ave NW between June 10-24 to get up to 50% off your purchase.",
+  message: "Our Spring sale starts NOW! \n\nCome visit us in The High Street at 12529 102 Ave NW between June 10-24 to get up to 50% off your purchase.",
   unsubscribeUrl: "http://circularchic.localhost:3000/unsubscribe?email=ZGltaXRyaUByZWNhbGxjeC5jb20="
 } as MarketingEmailProps;
 

@@ -36,10 +36,8 @@ Route::group([ 'prefix' => 'app', 'middleware' => [ 'auth:clerk', BusinessAuth::
 
     Route::get('/businesses/{business:slug}/broadcasts', [ BroadcastController::class, 'list' ]);
 
-    Route::withoutMiddleware([ TrimStrings::class])->group(function () {
-        Route::post('/businesses/{business:slug}/broadcasts', [ BroadcastController::class, 'store' ]);
-        Route::post('/businesses/{business:slug}/broadcasts/send-test', [ BroadcastController::class, 'sendTestMessage' ]);
-    });
+    Route::post('/businesses/{business:slug}/broadcasts', [ BroadcastController::class, 'store' ]);
+    Route::post('/businesses/{business:slug}/broadcasts/send-test', [ BroadcastController::class, 'sendTestMessage' ]);
 
     Route::get('/businesses/{business:slug}/broadcasts/{broadcast}', [ BroadcastController::class, 'get' ]);
 

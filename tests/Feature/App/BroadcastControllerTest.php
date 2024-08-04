@@ -83,7 +83,6 @@ describe('it can action broadcasts', function () {
 
     })->with('business');
 
-
     it('can send a test broadcast', function (Business $business) {
         Mail::fake();
 
@@ -91,7 +90,7 @@ describe('it can action broadcasts', function () {
             $mock->shouldReceive('send')
                 ->with(
                     Mockery::on(fn (Contact $contact) => $contact->value === '+17809103702'),
-                    'Business A: Get up to 70% off this Friday and Saturday. Hurry, there is limited stock! Reply STOP to opt out.'
+                    "Business A: Get up to 70% off this Friday and Saturday. \n\nHurry, there is limited stock! \n\nReply STOP to opt out."
                 );
         });
 
@@ -100,7 +99,7 @@ describe('it can action broadcasts', function () {
 
         $this->postJson("/api/app/businesses/{$business->slug}/broadcasts/send-test", [
             'subject' => 'Up to 70% off this weekend!',
-            'message' => 'Get up to 70% off this Friday and Saturday. Hurry, there is limited stock!',
+            'message' => "Get up to 70% off this Friday and Saturday. \n\nHurry, there is limited stock!\n\n",
 
             'email_address' => 'dimitri@recallcx.com',
             'phone_number' => '7809103702',

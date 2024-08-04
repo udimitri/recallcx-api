@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use App\Domain\Clerk\ClerkUser;
 use App\Domain\Twilio\LookupClient;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Tests\Stubs\StubLookupClient;
@@ -21,8 +21,10 @@ abstract class TestCase extends BaseTestCase
         });
     }
 
-    public function unitTestUser(): ClerkUser
+    public function unitTestUser(): User
     {
-        return new ClerkUser('user_test');
+        return User::query()->firstOrCreate([
+            'email' => 'test@recallcx.com'
+        ]);
     }
 }

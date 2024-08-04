@@ -27,7 +27,7 @@ Route::group([ 'prefix' => 'kiosk' ], function () {
 });
 
 // app
-Route::group([ 'prefix' => 'app', 'middleware' => [ 'auth:clerk', BusinessAuth::class ] ], function () {
+Route::group([ 'prefix' => 'app', 'middleware' => [ 'auth', BusinessAuth::class ] ], function () {
     Route::get('/businesses/{business:slug}', [ BusinessController::class, 'get' ]);
 
     Route::get('/businesses/{business:slug}/dashboard', [ DashboardController::class, 'dashboard' ]);

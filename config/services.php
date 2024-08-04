@@ -40,10 +40,6 @@ return [
         'auth_token' => env('TWILIO_AUTH_TOKEN'),
     ],
 
-    'clerk' => [
-        'token' => env('CLERK_TOKEN')
-    ],
-
     'google' => [
         'key' => env('GOOGLE_MAPS_API_KEY'),
     ],

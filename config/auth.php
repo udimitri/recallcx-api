@@ -14,7 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'clerk',
+        'guard' => env('AUTH_GUARD', 'web'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
     /*
@@ -35,10 +36,10 @@ return [
     */
 
     'guards' => [
-        'clerk' => [
-            'driver' => 'clerk',
-            'provider' => 'clerk-provider'
-        ]
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -59,9 +60,15 @@ return [
     */
 
     'providers' => [
-        'clerk-provider' => [
-            'driver' => 'clerk-provider'
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
     ],
 
     /*

@@ -2,9 +2,6 @@
 
 namespace App\Providers;
 
-use App\Domain\Clerk\ClerkApi;
-use App\Domain\Clerk\ClerkGuard;
-use App\Domain\Clerk\ClerkProvider;
 use App\Domain\Google\LivePlacesApi;
 use App\Domain\Google\PlacesApi;
 use App\Domain\Messenger\LiveMessenger;
@@ -52,23 +49,6 @@ class AppServiceProvider extends ServiceProvider
             return new LivePlacesApi(
                 config('services.google.key')
             );
-        });
-
-        $this->app->bind(ClerkApi::class, function (Application $app) {
-            return new ClerkApi(
-                config('services.clerk.token'),
-            );
-        });
-
-        Auth::extend('clerk', function (Application $app, $name, array $config) {
-            return new ClerkGuard(
-                $app->make(ClerkApi::class),
-                $app->make(Request::class)
-            );
-        });
-
-        Auth::provider('clerk-provider', function () {
-            return new ClerkProvider();
         });
     }
 

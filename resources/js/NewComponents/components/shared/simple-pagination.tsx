@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Pagination,
   PaginationGap,
@@ -7,8 +5,7 @@ import {
   PaginationNext,
   PaginationPage,
   PaginationPrevious,
-} from '@/components/pagination'
-import { usePathname, useSearchParams } from "next/navigation";
+} from '@/NewComponents/components/pagination'
 
 export function SimplePagination({
   pagination,
@@ -18,14 +15,11 @@ export function SimplePagination({
     last_page: number;
   },
 }) {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-
   const link = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('page', page.toString());
+    const params = new URLSearchParams(window.location.search);
+    params.set('page[number]', page.toString());
 
-    return `${pathname}?${params.toString()}`;
+    return `${window.location.pathname}?${params.toString()}`;
   };
 
   const optionsFactory = () => {

@@ -80,9 +80,7 @@ export default function Dashboard({auth, business, audience, reviews}: PageProps
       <Head title="Dashboard" />
 
       <div>
-        <h1 className="text-2xl font-semibold mb-2">Welcome back, Dimitri! 👋</h1>
-
-        <div className="mt-8 grid gap-8">
+        <div className="grid gap-8">
           <BusinessHeading
             name={business.name}
             address={business.address}

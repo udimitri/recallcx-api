@@ -39,7 +39,7 @@ export function GrowthChart({
             return null
           }}
         />
-        <CartesianGrid vertical={true} horizontal={false} strokeDasharray="4" strokeWidth={0.5} stroke="#999"/>
+        {/*<CartesianGrid vertical={true} horizontal={false} strokeDasharray="4" strokeWidth={0.5} stroke="#999"/>*/}
 
         <YAxis hide={true} domain={['dataMin', "auto"]} />
         <XAxis
@@ -57,12 +57,12 @@ export function GrowthChart({
           type="monotone"
           dataKey="count"
           fillOpacity={1}
-          fill="#2931840D"
+          fill="#29A4D60D"
           strokeWidth={2}
-          stroke="#293184"
+          stroke="#29A4D6"
           activeDot={{
             r: 8,
-            style: {fill: "#293184"},
+            style: {fill: "#29A4D6"},
           }}
 
         />

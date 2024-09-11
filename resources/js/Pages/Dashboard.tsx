@@ -8,6 +8,7 @@ import {Head} from '@inertiajs/react';
 import {DashboardRowReport, PageProps} from '@/types';
 import {Button} from "@/NewComponents/components/button";
 import {GrowthChart} from "@/Pages/Partials/GrowthChart";
+import {ChatBubbleLeftEllipsisIcon, PaperAirplaneIcon, UserIcon} from "@heroicons/react/24/outline";
 
 
 type Props = {
@@ -17,28 +18,6 @@ type Props = {
   },
   audience: DashboardRowReport,
   reviews: DashboardRowReport
-}
-
-
-function BusinessHeading({
-  name,
-  address
-}: {
-  name: string,
-  address: string
-}) {
-  return (
-    <div className="flex items-center gap-4 rounded-xl p-4 bg-zinc-100">
-      <div className="w-16 h-16 bg-zinc-200 rounded-full flex justify-center items-center">
-        <BuildingStorefrontIcon className="w-10 text-zinc-600" />
-      </div>
-
-      <div className="flex flex-col">
-        <h2 className="text-xl font-semibold">{name}</h2>
-        <p>{address}</p>
-      </div>
-    </div>
-  );
 }
 
 function DashboardRow({
@@ -75,17 +54,72 @@ export default function Dashboard({auth, business, audience, reviews}: PageProps
   return (
     <AuthenticatedLayout
       user={auth.user}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
+      business={auth.business}
+      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Overview</h2>}
     >
       <Head title="Dashboard" />
 
       <div>
-        <div className="grid gap-8">
-          <BusinessHeading
-            name={business.name}
-            address={business.address}
-          />
+        <div className="mb-12">
+          <h5 className="font-medium text-zinc-600 mb-2">Quick actions</h5>
 
+          <div className="grid grid-cols-4 gap-8">
+            <div className="flex flex-col items-center justify-center bg-zinc-100 rounded-md p-4 ">
+              <PaperAirplaneIcon className="w-6" />
+              <span>Send broadcast</span>
+              <p className="text-xs text-center">Quickly send an email or SMS message to your entire audience.</p>
+            </div>
+            <div className="flex flex-col items-center justify-center bg-zinc-100 rounded-md p-4 ">
+              <ChatBubbleLeftEllipsisIcon className="w-6" />
+              <span>View review requests</span>
+              <p className="text-xs text-center">Review how often you are sending our new review requests.</p>
+            </div>
+            <div className="flex flex-col items-center justify-center bg-zinc-100 rounded-md p-4 ">
+              <UserIcon className="w-6" />
+              <span>Manage audience</span>
+              <p className="text-xs text-center">See who's in your audience and remove contacts.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-4 mb-12">
+          <div>
+            <h5 className="font-medium text-zinc-600 mb-2">Audience size</h5>
+            <span className="text-3xl font-bold">{audience.count ?? 'N/A'}</span>
+            <p className="text-green-600">
+              {(audience.change && audience.change > 0) && (<>
+                <ArrowTrendingUpIcon className="w-5 inline-block align-text-bottom" /> +{audience.change} last 30 days
+              </>)}
+            </p>
+          </div>
+          <div>
+            <h5 className="font-medium text-zinc-600 mb-2">Review count</h5>
+            <span className="text-3xl font-bold">{reviews.count ?? 'N/A'}</span>
+            <p className="text-green-600">
+              {(audience.change && audience.change > 0) && (<>
+                <ArrowTrendingUpIcon className="w-5 inline-block align-text-bottom" /> +{audience.change} last 30 days
+              </>)}
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-4">
+          <div className="col-span-2 pr-16">
+            <h5 className="font-medium text-zinc-600 mb-2">Audience growth</h5>
+            <div className="h-[200px] w-full">
+              <GrowthChart data={audience.last7} />
+            </div>
+          </div>
+          <div className="col-span-2 pr-16">
+            <h5 className="font-medium text-zinc-600 mb-2">Review growth</h5>
+            <div className="h-[200px] w-full">
+              <GrowthChart data={audience.last7} />
+            </div>
+          </div>
+        </div>
+
+
+        <div className="grid gap-8 hidden">
           <DashboardRow
             label={'Audience'}
             row={audience}

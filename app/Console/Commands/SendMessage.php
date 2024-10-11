@@ -7,7 +7,9 @@ use App\Domain\Messenger\Messenger;
 use App\Domain\Twilio\LookupClient;
 use App\Models\Business;
 use App\Models\Contact;
+use App\Models\Enums\BroadcastStatus;
 use App\Models\Enums\ContactType;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class SendMessage extends Command
@@ -23,7 +25,18 @@ class SendMessage extends Command
         $subject = "🛍️ 20% OFF Outerwear & Boots – This Friday & Saturday! 🛍️";
         $message = "🛍️ 20% OFF Outerwear & Boots – This Friday & Saturday! 🛍️\n\nSave 20% on all regular-priced outerwear and boots with blue/green tags!* 🧥👢 Hurry and get your fall favorites before they're gone!\n\n🗓️ This Friday & Saturday only! 🚫 Excludes fur jackets and coats. ⏳ Limited time – shop early for the best picks!";
 
-        $this->sendTestMessage($lookupClient, $messenger, $business, $subject, $message);
+        // $this->sendTestMessage($lookupClient, $messenger, $business, $subject, $message);
+        $this->sendMessage($business, $subject, $message);
+    }
+
+    private function sendMessage(Business $business, string $subject, string $message)
+    {
+        $business->broadcasts()->create([
+            'status' => BroadcastStatus::Created,
+            'subject' => $subject,
+            'message' => $message,
+            'send_at' => (new Carbon("2024-10-11 10:05:00", "America/Edmonton"))->utc()
+        ]);
     }
 
     private function sendTestMessage(

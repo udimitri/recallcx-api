@@ -26,17 +26,17 @@ class SendMessage extends Command
         $message = "Get ready for our exclusive Black Friday 3-Day Sale! 🎉 Starting Today, enjoy 50% OFF all boxed shoes. New deals revealed daily! Don't miss out—shop your favorites before they're gone. See you soon!";
 
 //         $this->sendTestMessage($lookupClient, $messenger, $business, $subject, $message);
-         $this->sendMessage($business, $subject, $message);
+//         $this->sendMessage($business, $subject, $message);
     }
 
     private function sendMessage(Business $business, string $subject, string $message)
     {
-        $business->broadcasts()->create([
-            'status' => BroadcastStatus::Created,
-            'subject' => $subject,
-            'message' => $message,
-            'send_at' => (new Carbon("2024-11-27 10:00:00", "America/Edmonton"))->utc()
-        ]);
+//        $business->broadcasts()->create([
+//            'status' => BroadcastStatus::Created,
+//            'subject' => $subject,
+//            'message' => $message,
+//            'send_at' => (new Carbon("2024-11-27 10:00:00", "America/Edmonton"))->utc()
+//        ]);
     }
 
     private function sendTestMessage(

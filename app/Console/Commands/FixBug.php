@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Domain\Messenger\Messages\TestBroadcastMessage;
 use App\Domain\Messenger\Messenger;
 use App\Domain\Twilio\LookupClient;
+use App\Jobs\SendBroadcast;
 use App\Models\Broadcast;
 use App\Models\Business;
 use App\Models\Contact;
@@ -55,7 +56,7 @@ class FixBug extends Command
             '+17809539226',
         ];
 
-        foreach($contacts as $contact) {
+        foreach ($contacts as $contact) {
             $contact = $business
                 ->contacts()
                 ->where([
@@ -63,7 +64,8 @@ class FixBug extends Command
                     'value' => $contact,
                 ])
                 ->first();
-            info($contact->id);
+
+            dispatch(new SendBroadcast($broadcast, $contact));
         }
     }
 }

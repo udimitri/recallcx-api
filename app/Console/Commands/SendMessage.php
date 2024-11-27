@@ -22,21 +22,21 @@ class SendMessage extends Command
     {
         $business = Business::where('slug', 'circularchic')->firstOrFail();
 
-        $subject = "🛍️ 20% OFF Outerwear & Boots – This Friday & Saturday! 🛍️";
-        $message = "🛍️ 20% OFF Outerwear & Boots – This Friday & Saturday! 🛍️\n\nSave 20% on all regular-priced outerwear and boots with blue/green tags!* 🧥👢 Hurry and get your fall favorites before they're gone!\n\n🗓️ This Friday & Saturday only! 🚫 Excludes fur jackets and coats. ⏳ Limited time – shop early for the best picks!";
+        $subject = "Get ready for our exclusive Black Friday 3-Day Sale!";
+        $message = "Get ready for our exclusive Black Friday 3-Day Sale! 🎉 Starting Today, enjoy 50% OFF all boxed shoes. New deals revealed daily! Don’t miss out—shop your favorites before they’re gone. See you soon!";
 
-        // $this->sendTestMessage($lookupClient, $messenger, $business, $subject, $message);
+         $this->sendTestMessage($lookupClient, $messenger, $business, $subject, $message);
         // $this->sendMessage($business, $subject, $message);
     }
 
     private function sendMessage(Business $business, string $subject, string $message)
     {
-//        $business->broadcasts()->create([
-//            'status' => BroadcastStatus::Created,
-//            'subject' => $subject,
-//            'message' => $message,
-//            'send_at' => (new Carbon("2024-10-11 10:05:00", "America/Edmonton"))->utc()
-//        ]);
+        $business->broadcasts()->create([
+            'status' => BroadcastStatus::Created,
+            'subject' => $subject,
+            'message' => $message,
+            'send_at' => (new Carbon("2024-10-11 10:05:00", "America/Edmonton"))->utc()
+        ]);
     }
 
     private function sendTestMessage(

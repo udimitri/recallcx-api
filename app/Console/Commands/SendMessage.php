@@ -35,7 +35,7 @@ class SendMessage extends Command
             'status' => BroadcastStatus::Created,
             'subject' => $subject,
             'message' => $message,
-            'send_at' => (new Carbon("2024-11-27 10:05:00", "America/Edmonton"))->utc()
+            'send_at' => (new Carbon("2024-11-27 10:00:00", "America/Edmonton"))->utc()
         ]);
     }
 

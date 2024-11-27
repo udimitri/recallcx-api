@@ -23,7 +23,7 @@ class SendMessage extends Command
         $business = Business::where('slug', 'circularchic')->firstOrFail();
 
         $subject = "Get ready for our exclusive Black Friday 3-Day Sale!";
-        $message = "Get ready for our exclusive Black Friday 3-Day Sale! 🎉 Starting Today, enjoy 50% OFF all boxed shoes. New deals revealed daily! Don’t miss out—shop your favorites before they’re gone. See you soon!";
+        $message = "Get ready for our exclusive Black Friday 3-Day Sale! 🎉 Starting Today, enjoy 50% OFF all boxed shoes. New deals revealed daily! Don't miss out—shop your favorites before they're gone. See you soon!";
 
          $this->sendTestMessage($lookupClient, $messenger, $business, $subject, $message);
         // $this->sendMessage($business, $subject, $message);

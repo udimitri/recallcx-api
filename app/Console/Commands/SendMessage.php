@@ -22,8 +22,8 @@ class SendMessage extends Command
     {
         $business = Business::where('slug', 'circularchic')->firstOrFail();
 
-        $subject = "Black Friday Day 2 is here! 🎉";
-        $message = "Black Friday Day 2 is here! 🎉 Enjoy 50% OFF coats and sweaters and 20% OFF fur coats. Don’t wait—shop these amazing deals while they last!";
+        $subject = "It's Day 3 of our Black Friday Sale—your last chance to save big! 🎉";
+        $message = "It's Day 3 of our Black Friday Sale—your last chance to save big! 🎉 Enjoy 50% OFF storewide and 20% OFF fur coats. (*Exclusions apply.) Hurry, sale ends tonight!";
 
 //         $this->sendTestMessage($lookupClient, $messenger, $business, $subject, $message);
          $this->sendMessage($business, $subject, $message);
@@ -35,7 +35,7 @@ class SendMessage extends Command
             'status' => BroadcastStatus::Created,
             'subject' => $subject,
             'message' => $message,
-            'send_at' => (new Carbon("2024-11-28 10:00:00", "America/Edmonton"))->utc()
+            'send_at' => (new Carbon("2024-11-29 9:00:00", "America/Edmonton"))->utc()
         ]);
     }
 
